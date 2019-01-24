@@ -1,0 +1,22 @@
+{
+  "name": "BlackrockM/content-provider-client",
+  "description": "Some useful classes for work with ContentProvider and GeoIP services",
+  "license": "MIT",
+  "type": "package",
+  "authors": [
+    {
+      "name": "Ivan Kalaianov",
+      "email": "ivan.kalaianov@innovecs.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6",
+    "symfony/symfony": "~3.3",
+    "guzzlehttp/guzzle": "~6.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "BlackrockM\\ContentProviderClient\\": "/"
+    }
+  }
+}
