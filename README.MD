@@ -1,55 +1,44 @@
 # Plugin for integration ContentProvider to WordPress
 
-### Example of usage
-```php
-// Return concrete value just using `path` parameter:
-ContentProviderShortcodeHandler::execute(['name' => 'NAME', 'country_code' => 'COUNTRY_CODE', 'path' => 'list.0.addresses.0.address']);
+Plugin will try find value with passed parameters.
 
-// Or get all response from server
-ContentProviderShortcodeHandler::execute(['name' => 'NAME', 'country_code' => 'COUNTRY_CODE']);
+If result not found then will return `default` page.
+
+### Example of usage
+
+Return concrete value just using `path` parameter:
+
+```php
+ContentProviderShortcodeHandler::execute(['name' => 'NAME', 'country_code' => 'COUNTRY_CODE', 'path' => 'addresses.0.address']);
+```
+
+Or don't pass `country`. Plugin will try to found country based on user `IP`
+
+```php
+ContentProviderShortcodeHandler::execute(['name' => 'NAME']);
 ```
 
 ### Correct response
 ```json
 {
-  "list": [
+  "id": 0,
+  "addresses": [
     {
-      "id": 0,
-      "addresses": [
-        {
-          "address": "string"
-        }
-      ],
-      "phones": [
-        {
-          "phone": "string",
-          "schedule": "string"
-        }
-      ],
-      "emails": [
-        {
-          "email": "string"
-        }
-      ],
-      "name": "string",
-      "country_code": "string"
+      "address": "string"
     }
   ],
-  "pagination": {
-    "totalItems": 15,
-    "itemsPerPage": 5,
-    "currentPage": 1
-  }
-}
-```
-
-### Incorrect response structure
-```json
-{
-  "errors": [
+  "phones": [
     {
-      "NAME_OF_ERROR": "ERROR"
+      "phone": "string",
+      "schedule": "string"
     }
-  ]
+  ],
+  "emails": [
+    {
+      "email": "string"
+    }
+  ],
+  "name": "string",
+  "country_code": "string"
 }
 ```

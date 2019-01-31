@@ -27,70 +27,116 @@ class ContentProviderShortcodeHandler
     }
 
     /**
+     * Get default `page` from API server
+     *
+     * @return string|null
+     */
+    private function getDefaultPage()
+    {
+        if ($this->defaultPage === null) {
+            $response = $this->contentProviderListRetrieverService->execute([]);
+            $decoded = \json_decode($response, true);
+
+            if (is_array($decoded) && isset($decoded['list'])) {
+                foreach ($decoded['list'] as $page) {
+                    if ($page['country_code'] === null) {
+                        return $this->defaultPage = $page;
+                    }
+                }
+            }
+        }
+
+        return $this->defaultPage;
+    }
+
+    /**
+     * Take value from `page`
+     *
+     * @param string $path
+     * @param array $item
+     * @return mixed
+     */
+    private function pathAccessor($path, $item)
+    {
+        $path = preg_replace_callback('/(\.?[^.]+\.?)/', function ($matches) {
+            return '[' . trim($matches[0], '.') . ']';
+        }, $path);
+
+        $accessor = PropertyAccess::createPropertyAccessor();
+
+        if (preg_match('/^\[list\]\[([0-9]+)\](.*)$/', $path, $matches) != 0) {
+            return $accessor->getValue($item, $matches[2]);
+        }
+
+        return $accessor->getValue($item, $path);
+    }
+
+    /**
+     * Detect user country
+     *
+     * @return array
+     */
+    private function detectCountry()
+    {
+        if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+            $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $this->geoIPService->detect($ip);
+    }
+
+    /**
+     * Allowed params are:
+     * ```
+     * path
+     * country_auto_resolve
+     * name
+     * country_code
+     * ```
+     *
      * @param array $attrs shortcode attributes
-     * @return string|mixed
+     * @return string
      */
     public function execute($attrs = [])
     {
-        if (empty($attrs['country_code'])) {
-            if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-                $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
-            } else {
-                $ip = $_SERVER['REMOTE_ADDR'];
-            }
-            $geoIp = $this->geoIPService->detect($ip);
+        if ((!isset($attrs['country_auto_resolve']) || $attrs['country_auto_resolve'] === 'true') &&
+            empty($attrs['country_code'])) {
+
+            $geoIp = $this->detectCountry();
             $attrs['country_code'] = $geoIp['country_code'];
         }
 
         $requestAttrs = array_intersect_key($attrs, array_flip(['name', 'country_code']));
 
         $response = $this->contentProviderListRetrieverService->execute($requestAttrs);
+        $decoded = \json_decode($response, true);
+        $page = null;
 
-        if (!empty($attrs['path'])) {
-
-            $path = preg_replace_callback('/(\.?[^.]+\.?)/', function ($matches) {
-                return '[' . trim($matches[0], '.') . ']';
-            }, $attrs['path']);
-
-            $accessor = PropertyAccess::createPropertyAccessor();
-            $decoded = json_decode($response, true);
-
-            // If country code is specified we need check that item has these country. If not then return default.
-            if (preg_match('/^\[list\]\[([0-9]+)\](.*)$/', $path, $matches) != 0 &&
-                !empty($attrs['country_code'])) {
-
-                $list = $accessor->getValue($decoded, '[list]');
-
-                if ($list !== null) {
-                    foreach ($list as $item) {
-                        if ($item['country_code'] === $attrs['country_code']) {
-                            $value = $accessor->getValue($item, $matches[2]);
-                            if ($value !== null) {
-                                return $value;
-                            }
-                        }
+        if (!empty($attrs['country_code'])) {
+            if (isset($decoded['list'])) {
+                foreach ($decoded['list'] as $item) {
+                    if ($item['country_code'] === $attrs['country_code']) {
+                        $page = $item;
+                        break;
                     }
                 }
-
-                if ($this->defaultPage === null) {
-                    $this->defaultPage = $this->contentProviderListRetrieverService->execute(['name' => $attrs['name']]);
-                }
-
-                if ($this->defaultPage !== null) {
-                    $decoded = json_decode($this->defaultPage, true);
-                    foreach ($decoded['list'] as $item) {
-                        if ($item['country_code'] === null) {
-                            return $accessor->getValue($item, $matches[2]);
-                        }
-                    }
-                }
-
-                return null;
             }
-
-            return $accessor->getValue($decoded, $path);
         }
 
-        return $response;
+        if ($page === null) {
+            $page = $this->getDefaultPage();
+        }
+
+        if (!empty($attrs['path'])) {
+            $value = $this->pathAccessor($attrs['path'], $page);
+            if (is_array($value)) {
+                return \json_encode($value);
+            } else {
+                return $value;
+            }
+        }
+
+        return \json_encode($page);
     }
 }
