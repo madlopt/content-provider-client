@@ -1,6 +1,6 @@
 <?php
 
-namespace BlackrockM\ContentProviderClient;
+namespace BlackrockM\ContentProviderClient\Utils;
 
 /**
  * Class GeoIPService
@@ -30,13 +30,12 @@ class GeoIPService
     }
 
     /**
-     * @param string $ip
      * @return array
      * @throws \RuntimeException
      */
-    public function detect($ip)
+    public function getGeoData()
     {
-        $url = $this->url . $ip . '?user=' . $this->user . '&pass=' . $this->pass;
+        $url = $this->url . $this->detectIp() . '?user=' . $this->user . '&pass=' . $this->pass;
         $content = file_get_contents($url);
         if ($content === false) {
             throw new \RuntimeException('Could not fetch data from server');
@@ -44,4 +43,21 @@ class GeoIPService
 
         return json_decode($content, true);
     }
+    
+    /**
+     * Detect user country
+     *
+     * @return array
+     */
+    private function detectIp()
+    {
+        if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+            $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
+    }
+    
+    
 }
