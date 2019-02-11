@@ -1,4 +1,4 @@
-# Plugin for integration ContentProvider to WordPress
+# Client for integration ContentProviderService
 
 Plugin will try find value with passed parameters.
 
@@ -6,16 +6,22 @@ If result not found then will return `default` page.
 
 ### Example of usage
 
+Create ContentProviderHandler:
+
+```php
+$handler = (new ContentProviderHandlerFactory())->create();
+```
+
 Return concrete value just using `path` parameter:
 
 ```php
-ContentProviderShortcodeHandler::execute(['name' => 'NAME', 'country_code' => 'COUNTRY_CODE', 'path' => 'addresses.0.address']);
+$handler->execute(['name' => 'NAME', 'country_code' => 'COUNTRY_CODE', 'path' => 'addresses.0.address']);
 ```
 
 Or don't pass `country`. Plugin will try to found country based on user `IP`
 
 ```php
-ContentProviderShortcodeHandler::execute(['name' => 'NAME']);
+$handler->execute(['name' => 'NAME']);
 ```
 
 ### Correct response
