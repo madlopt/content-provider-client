@@ -9,6 +9,8 @@ If result not found then will return `default` page.
 Create ContentProviderHandler:
 
 ```php
+use BlackrockM\ContentProviderClient\Handler\Factory\ContentProviderHandlerFactory;
+
 $handler = (new ContentProviderHandlerFactory())->create();
 ```
 

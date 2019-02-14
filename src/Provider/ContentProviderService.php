@@ -2,8 +2,7 @@
 
 namespace BlackrockM\ContentProviderClient\Provider;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use GuzzleHttp\Client;
+use Http\Client\Common\HttpMethodsClient;
 
 /**
  * Class ContentProviderService
@@ -11,39 +10,34 @@ use GuzzleHttp\Client;
  */
 class ContentProviderService
 {
-    /** @var string */
-    private $token;
-    
-    /** @var string */
-    private $url;
-
     /**
-     * @param string $url Url to API domain
-     * @param string $token OAuth2 token
+     * @var HttpMethodsClient
      */
-    public function __construct($url, $token)
-    {
-        $this->url = $url;
-        $this->token = $token;
-    }
-
+    private $client;
+    
     /**
-     * Execute query and return response
+     * ContentProviderService constructor.
      *
-     * @param array $params API request params
+     * @param HttpMethodsClient $client
+     */
+    public function __construct(HttpMethodsClient $client)
+    {
+        $this->client = $client;
+    }
+    
+    /**
+     * @param RequestObject|null $requestObject
+     *
      * @return string
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Http\Client\Exception
      */
     public function execute(RequestObject $requestObject = null)
     {
-        $client = new Client();
-        $response = $client->request('GET', $this->url, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->token
-            ],
-            'query' => $requestObject ? array_filter($requestObject->toArray(), 'strlen') : []
-        ]);
-
-        return $response->getBody()->getContents();
+        $response = $this->client->get(
+            '/api/pages'.
+            ($requestObject ? '?'.http_build_query(array_filter($requestObject->toArray(), 'strlen')) : '')
+        );
+        
+        return $response->getBody();
     }
 }
