@@ -27,7 +27,7 @@ class ContentProviderHandler
     /**
      * @var string|null
      */
-    private $defaultPage = null;
+    private $page = null;
     
     /**
      * @var LoggerInterface
@@ -58,15 +58,13 @@ class ContentProviderHandler
      */
     private function getDefaultPage()
     {
-        if ($this->defaultPage === null) {
-            $response = $this->contentProviderService->execute();
-            $decoded = \json_decode($response, true);
-            
-            if (is_array($decoded) && isset($decoded['list'])) {
-                foreach ($decoded['list'] as $page) {
-                    if ($page['country_code'] === null) {
-                        return $this->defaultPage = $page;
-                    }
+        $response = $this->contentProviderService->execute();
+        $decoded = \json_decode($response, true);
+        
+        if (is_array($decoded) && isset($decoded['list'])) {
+            foreach ($decoded['list'] as $page) {
+                if ($page['country_code'] === null) {
+                    return page;
                 }
             }
         }
@@ -75,14 +73,20 @@ class ContentProviderHandler
     }
     
     /**
-     * Take value from `page`
+     * @param null $path
      *
-     * @param string $path
-     * @param array $item
-     * @return mixed
+     * @return mixed|null|string
      */
-    private function pathAccessor($path, $item)
+    private function pathAccessor($path = null)
     {
+        if ($this->page === null){
+            throw new \UnexpectedValueException('You can\'t use path access to null data.');
+        }
+        
+        if ($path === null){
+            return $this->page;
+        }
+        
         $path = preg_replace_callback('/(\.?[^.]+\.?)/', function ($matches) {
             return '[' . trim($matches[0], '.') . ']';
         }, $path);
@@ -90,27 +94,24 @@ class ContentProviderHandler
         $accessor = PropertyAccess::createPropertyAccessor();
         
         if (preg_match('/^\[list\]\[([0-9]+)\](.*)$/', $path, $matches) != 0) {
-            return $accessor->getValue($item, $matches[2]);
+            return $accessor->getValue($this->page, $matches[2]);
         }
         
-        return $accessor->getValue($item, $path);
+        return $accessor->getValue($this->page, $path);
     }
-    
-    
-    
+
     /**
      * Allowed params are:
      * ```
-     * path
      * country_auto_resolve
      * name
      * country_code
      * ```
      *
      * @param array $attrs shortcode attributes
-     * @return string|null
+     * @return $this
      */
-    public function execute($attrs = [])
+    public function retrieve($attrs = [])
     {
         try {
             
@@ -125,35 +126,44 @@ class ContentProviderHandler
             
             $response = $this->contentProviderService->execute(RequestObject::createFromArray($requestAttrs));
             $decoded = \json_decode($response, true);
-            $page = null;
             
             if (!empty($attrs['country_code'])) {
                 if (isset($decoded['list'])) {
                     foreach ($decoded['list'] as $item) {
                         if ($item['country_code'] === $attrs['country_code']) {
-                            $page = $item;
+                            $this->page = $item;
                             break;
                         }
                     }
                 }
             }
             
-            if ($page === null) {
-                $page = $this->getDefaultPage();
+            if ($this->page === null) {
+                $this->page = $this->getDefaultPage();
             }
-            
-            if (!empty($attrs['path'])) {
-                $value = $this->pathAccessor($attrs['path'], $page);
-                if (is_array($value)) {
-                    return \json_encode($value);
-                } else {
-                    return $value;
-                }
-            }
-            
-            return \json_encode($page);
-            
+ 
         } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * @param null $path
+     *
+     * @return false|mixed|null|string
+     */
+    public function path($path = null)
+    {
+        try {
+            $value = $this->pathAccessor($path);
+            if (is_array($value)) {
+                return \json_encode($value);
+            } else {
+                return $value;
+            }
+        } catch (\Exception $e){
             $this->logger->error($e->getMessage());
         }
         

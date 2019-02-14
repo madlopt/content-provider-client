@@ -17,13 +17,18 @@ $handler = (new ContentProviderHandlerFactory())->create();
 Return concrete value just using `path` parameter:
 
 ```php
-$handler->execute(['name' => 'NAME', 'country_code' => 'COUNTRY_CODE', 'path' => 'addresses.0.address']);
+$page = $handler->retrieve(['name' => 'NAME', 'country_code' => 'COUNTRY_CODE']);
+
+echo $page->path('addresses.0.address'); //return first address
+echo $page->path('company');
+echo $page->path('phones.1.phone'); //return second phone
 ```
 
 Or don't pass `country`. Plugin will try to found country based on user `IP`
 
 ```php
-$handler->execute(['name' => 'NAME']);
+$page = $handler->retrieve(['name' => 'NAME']);
+echo $page->path(); //return full json response, see below
 ```
 
 ### Correct response
