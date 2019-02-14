@@ -3,7 +3,6 @@
 namespace BlackrockM\ContentProviderClient\Provider;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use GuzzleHttp\Client;
 
 /**
  * Class ContentProviderRequestObject
