@@ -20,9 +20,11 @@ class ContentProviderHandlerFactory
      */
     public function create(LoggerInterface $logger = null)
     {
+        $logger = $logger !== null ? $logger : new NullLogger();
         return new ContentProviderHandler(
+            $logger,
             new ContentProviderService(
-                (new HttpClientFactory($logger ? $logger : new NullLogger()))
+                (new HttpClientFactory($logger))
                     ->createApiClient(
                         getenv('CONTENT_PROVIDER_URI'),
                         getenv('CONTENT_PROVIDER_TOKEN')
