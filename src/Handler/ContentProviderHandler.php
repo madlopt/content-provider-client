@@ -54,7 +54,8 @@ class ContentProviderHandler
     /**
      * Get default `page` from API server
      *
-     * @return string|null
+     * @return array
+     * @throws \Http\Client\Exception
      */
     private function getDefaultPage()
     {
@@ -64,7 +65,7 @@ class ContentProviderHandler
         if (is_array($decoded) && isset($decoded['list'])) {
             foreach ($decoded['list'] as $page) {
                 if ($page['country_code'] === null) {
-                    return page;
+                    return $page;
                 }
             }
         }
@@ -99,7 +100,7 @@ class ContentProviderHandler
         
         return $accessor->getValue($this->page, $path);
     }
-
+    
     /**
      * Allowed params are:
      * ```
@@ -141,7 +142,7 @@ class ContentProviderHandler
             if ($this->page === null) {
                 $this->page = $this->getDefaultPage();
             }
- 
+            
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
