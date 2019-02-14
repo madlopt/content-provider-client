@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.1.0 - 2019-02-14
+
+* refactor: structure, client and add log support 
+
 ## 2.0.0 - 2019-02-11
 
 * refactor: change structure and major changes
