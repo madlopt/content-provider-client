@@ -33,9 +33,12 @@ class ContentProviderHandlerFactory
                 new ArrayAdapter()
             ),
             new GeoIPService(
-                getenv('CONTENT_PROVIDER_GEOIP_URL'),
-                getenv('CONTENT_PROVIDER_GEOIP_CLIENT'),
-                getenv('CONTENT_PROVIDER_GEOIP_PASSWORD')
+                (new HttpClientFactory($logger))
+                    ->createGeoIpClient(
+                        getenv('CONTENT_PROVIDER_GEOIP_URL'),
+                        getenv('CONTENT_PROVIDER_GEOIP_CLIENT'),
+                        getenv('CONTENT_PROVIDER_GEOIP_PASSWORD')
+                    )
             )
         );
     }

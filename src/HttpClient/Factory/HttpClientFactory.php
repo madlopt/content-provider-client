@@ -8,6 +8,7 @@ use Http\Client\Common\Plugin\AddHostPlugin;
 use Http\Client\Common\Plugin\AuthenticationPlugin;
 use Http\Client\Common\Plugin\ContentTypePlugin;
 use Http\Client\Common\Plugin\LoggerPlugin;
+use Http\Client\Common\Plugin\QueryDefaultsPlugin;
 use Http\Client\Common\PluginClient;
 use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
@@ -34,6 +35,29 @@ class HttpClientFactory
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
+    }
+
+    /**
+     * @param string $apiDomain
+     * @param string $user
+     * @param string $pass
+     * @return HttpMethodsClient
+     */
+    public function createGeoIpClient($apiDomain, $user, $pass)
+    {
+        $plugins = [
+            new LoggerPlugin($this->logger, new HttpClientFormatter()),
+            new ContentTypePlugin(),
+            new AddHostPlugin(UriFactoryDiscovery::find()->createUri($apiDomain)),
+            new QueryDefaultsPlugin(['user' => $user, 'pass' => $pass])
+        ];
+
+        $client = new PluginClient(
+            HttpClientDiscovery::find(),
+            $plugins
+        );
+
+        return new HttpMethodsClient($client, MessageFactoryDiscovery::find());
     }
 
     /**

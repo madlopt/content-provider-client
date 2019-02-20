@@ -2,6 +2,8 @@
 
 namespace BlackrockM\ContentProviderClient\Utils;
 
+use Http\Client\Common\HttpMethodsClient;
+
 /**
  * Class GeoIPService
  *
@@ -10,48 +12,38 @@ namespace BlackrockM\ContentProviderClient\Utils;
 class GeoIPService
 {
     const LOCALHOST = '127.0.0.1';
-    
-    /** @var string */
-    private $url;
-    /** @var string */
-    private $user;
-    /** @var string */
-    private $pass;
+
+    /** @var HttpMethodsClient */
+    private $client;
 
     /**
      * GeoIPService constructor.
-     * @param string $url
-     * @param string $user
-     * @param string $pass
+     * @param HttpMethodsClient $client
      */
-    public function __construct($url, $user, $pass)
+    public function __construct(HttpMethodsClient $client)
     {
-        $this->url = $url;
-        $this->user = $user;
-        $this->pass = $pass;
+        $this->client = $client;
     }
 
     /**
      * @return array
      * @throws \RuntimeException
+     * @throws \Http\Client\Exception
      */
     public function getGeoData()
     {
-        if ($this->detectIp() === self::LOCALHOST){
+        if ($this->detectIp() === self::LOCALHOST) {
             return $this->getLocalhostGeoData();
         }
-        
-        $url = $this->url . $this->detectIp() . '?user=' . $this->user . '&pass=' . $this->pass;
-        $content = file_get_contents($url);
-        if ($content === false) {
-            throw new \RuntimeException('Could not fetch data from server');
-        }
+
+        $response = $this->client->get('/country/' . $this->detectIp());
+        $content = $response->getBody()->getContents();
 
         return json_decode($content, true);
     }
-    
+
     /**
-     * @return string
+     * @return array
      */
     private function getLocalhostGeoData()
     {
@@ -59,11 +51,11 @@ class GeoIPService
             'country_code' => null,
         ];
     }
-    
+
     /**
      * Detect user country
      *
-     * @return array
+     * @return string
      */
     private function detectIp()
     {
@@ -74,6 +66,4 @@ class GeoIPService
         }
         return $ip;
     }
-    
-    
 }
