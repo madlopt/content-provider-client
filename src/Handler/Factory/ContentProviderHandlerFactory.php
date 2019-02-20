@@ -8,6 +8,7 @@ use BlackrockM\ContentProviderClient\Provider\ContentProviderService;
 use BlackrockM\ContentProviderClient\Utils\GeoIPService;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 /**
  * Class ContentProviderHandlerFactory
@@ -28,7 +29,8 @@ class ContentProviderHandlerFactory
                     ->createApiClient(
                         getenv('CONTENT_PROVIDER_URI'),
                         getenv('CONTENT_PROVIDER_TOKEN')
-                    )
+                    ),
+                new ArrayAdapter()
             ),
             new GeoIPService(
                 getenv('CONTENT_PROVIDER_GEOIP_URL'),

@@ -9,6 +9,8 @@ namespace BlackrockM\ContentProviderClient\Utils;
  */
 class GeoIPService
 {
+    const LOCALHOST = '127.0.0.1';
+    
     /** @var string */
     private $url;
     /** @var string */
@@ -35,6 +37,10 @@ class GeoIPService
      */
     public function getGeoData()
     {
+        if ($this->detectIp() === self::LOCALHOST){
+            return $this->getLocalhostGeoData();
+        }
+        
         $url = $this->url . $this->detectIp() . '?user=' . $this->user . '&pass=' . $this->pass;
         $content = file_get_contents($url);
         if ($content === false) {
@@ -42,6 +48,16 @@ class GeoIPService
         }
 
         return json_decode($content, true);
+    }
+    
+    /**
+     * @return string
+     */
+    private function getLocalhostGeoData()
+    {
+        return [
+            'country_code' => null,
+        ];
     }
     
     /**
