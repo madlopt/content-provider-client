@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2.1 - 2019-02-20
+
+* refactor: add WP shortcode implimentation
+
 ## 2.2.0 - 2019-02-20
 
 * refactor: add cache  

@@ -55,3 +55,11 @@ echo $page->path(); //return full json response, see below
   "country_code": "string"
 }
 ```
+###Wordpress implimentation
+
+There are implemented retrieve content data with wordpress shortcode. 
+For register shortcode 'content_provider' just load file:  
+```
+require_once __DIR__ . '/vendor/BlackrockM/content-provider-client/src/Wordpress/ShortcodeInitialize.php';
+```
+
