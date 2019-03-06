@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2.3 - 2019-03-06
+
+* refactor: integration geoip-client
+
 ## 2.2.1 - 2019-02-20
 
 * refactor: add WP shortcode implimentation
