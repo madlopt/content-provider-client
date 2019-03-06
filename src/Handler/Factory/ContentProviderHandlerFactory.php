@@ -5,10 +5,11 @@ namespace BlackrockM\ContentProviderClient\Handler\Factory;
 use BlackrockM\ContentProviderClient\Handler\ContentProviderHandler;
 use BlackrockM\ContentProviderClient\HttpClient\Factory\HttpClientFactory;
 use BlackrockM\ContentProviderClient\Provider\ContentProviderService;
-use BlackrockM\ContentProviderClient\Utils\GeoIPService;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use BlackrockM\GeoIp\Client\Provider\Factory\GeoIpProviderFactory;
+use Symfony\Component\Cache\Adapter\NullAdapter;
 
 /**
  * Class ContentProviderHandlerFactory
@@ -19,9 +20,11 @@ class ContentProviderHandlerFactory
     /**
      * @return ContentProviderHandler
      */
-    public function create(LoggerInterface $logger = null)
+    public function create(LoggerInterface $logger = null, CacheItemPoolInterface $cacheItemPool = null)
     {
         $logger = $logger !== null ? $logger : new NullLogger();
+        $cacheItemPool = $cacheItemPool === null ? new NullAdapter() : $cacheItemPool;
+
         return new ContentProviderHandler(
             $logger,
             new ContentProviderService(
@@ -30,16 +33,9 @@ class ContentProviderHandlerFactory
                         getenv('CONTENT_PROVIDER_URI'),
                         getenv('CONTENT_PROVIDER_TOKEN')
                     ),
-                new ArrayAdapter()
+                $cacheItemPool
             ),
-            new GeoIPService(
-                (new HttpClientFactory($logger))
-                    ->createGeoIpClient(
-                        getenv('CONTENT_PROVIDER_GEOIP_URL'),
-                        getenv('CONTENT_PROVIDER_GEOIP_CLIENT'),
-                        getenv('CONTENT_PROVIDER_GEOIP_PASSWORD')
-                    )
-            )
+            GeoIpProviderFactory::create($logger, $cacheItemPool)
         );
     }
 }

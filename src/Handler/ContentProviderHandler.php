@@ -5,8 +5,8 @@ namespace BlackrockM\ContentProviderClient\Handler;
 use BlackrockM\ContentProviderClient\Provider\RequestObject;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use BlackrockM\ContentProviderClient\Utils\GeoIPService;
 use BlackrockM\ContentProviderClient\Provider\ContentProviderService;
+use BlackrockM\GeoIp\Client\Provider\GeoIpProvider;
 
 /**
  * Class ContentProviderHandler
@@ -20,9 +20,9 @@ class ContentProviderHandler
     private $contentProviderService;
     
     /**
-     * @var GeoIPService
+     * @var GeoIpProvider
      */
-    private $geoIPService;
+    private $geoIPProvider;
     
     /**
      * @var string|null
@@ -39,16 +39,16 @@ class ContentProviderHandler
      *
      * @param LoggerInterface        $logger
      * @param ContentProviderService $contentProviderService
-     * @param GeoIPService           $geoIPService
+     * @param GeoIpProvider           $geoIPProvider
      */
     public function __construct(
         LoggerInterface $logger,
         ContentProviderService $contentProviderService,
-        GeoIPService $geoIPService
+        GeoIpProvider $geoIPProvider
     ) {
         $this->logger = $logger;
         $this->contentProviderService = $contentProviderService;
-        $this->geoIPService = $geoIPService;
+        $this->geoIPProvider = $geoIPProvider;
     }
     
     /**
@@ -119,7 +119,7 @@ class ContentProviderHandler
             if ((!isset($attrs['country_auto_resolve']) || $attrs['country_auto_resolve'] === 'true') &&
                 empty($attrs['country_code'])) {
                 
-                $geoData = $this->geoIPService->getGeoData();
+                $geoData = $this->geoIPProvider->retrieveArray();
                 $attrs['country_code'] = $geoData['country_code'];
             }
             

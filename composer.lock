@@ -4,9 +4,54 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "869622035c85e6cec24f1e584cc85fbc",
-    "content-hash": "0b980020063a9dd71190b185b3929cee",
+    "hash": "c83dd9d23b8d10bce74db9c7907c73c0",
+    "content-hash": "088e3c2cb5284c98ac2b81c35a5e9f05",
     "packages": [
+        {
+            "name": "BlackrockM/geoip-client",
+            "version": "v0.0.3",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:BlackrockM/geoip-client.git",
+                "reference": "46b9fd29a3ad78e0527247bf315033b1b858162b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BlackrockM/geoip-client/zipball/46b9fd29a3ad78e0527247bf315033b1b858162b",
+                "reference": "46b9fd29a3ad78e0527247bf315033b1b858162b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6",
+                "php-http/client-common": "^1.0",
+                "php-http/discovery": "^1.4",
+                "php-http/guzzle6-adapter": "^1.1",
+                "php-http/logger-plugin": "^1.0",
+                "psr/log": "~1.1",
+                "symfony/cache": "^3.4"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "BlackrockM\\GeoIp\\Client\\": "/src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Kalaianov",
+                    "email": "ivan.kalaianov@innovecs.com"
+                }
+            ],
+            "description": "Service retrieve geo data from geoip.ourmicroservices.com",
+            "support": {
+                "source": "https://github.com/BlackrockM/geoip-client/tree/v0.0.3",
+                "issues": "https://github.com/BlackrockM/geoip-client/issues"
+            },
+            "time": "2019-03-04 14:18:40"
+        },
         {
             "name": "clue/stream-filter",
             "version": "v1.4.0",
@@ -244,33 +289,29 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.18",
+            "version": "v9.99.99",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db"
+                "reference": "84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
-                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95",
+                "reference": "84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.0"
+                "php": "^7"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*|5.*"
+                "phpunit/phpunit": "4.*|5.*",
+                "vimeo/psalm": "^1"
             },
             "suggest": {
                 "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
             },
             "type": "library",
-            "autoload": {
-                "files": [
-                    "lib/random.php"
-                ]
-            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -289,7 +330,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2019-01-03 20:59:08"
+            "time": "2018-07-02 15:55:56"
         },
         {
             "name": "php-http/client-common",
@@ -354,16 +395,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "02b7ea21eafa0757af04140890a67d8ed45f83b2"
+                "reference": "684855f2c2e9d0a61868b8f8d6bd0295c8a4b651"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/02b7ea21eafa0757af04140890a67d8ed45f83b2",
-                "reference": "02b7ea21eafa0757af04140890a67d8ed45f83b2",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/684855f2c2e9d0a61868b8f8d6bd0295c8a4b651",
+                "reference": "684855f2c2e9d0a61868b8f8d6bd0295c8a4b651",
                 "shasum": ""
             },
             "require": {
@@ -414,7 +455,7 @@
                 "message",
                 "psr7"
             ],
-            "time": "2019-01-23 12:41:22"
+            "time": "2019-02-23 07:42:53"
         },
         {
             "name": "php-http/guzzle6-adapter",
@@ -992,16 +1033,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v3.4.22",
+            "version": "v3.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "38e5f4300cff5e70b714afd7cc658f5138514f94"
+                "reference": "aa02b67f961a15cef21f21d293afcac574a62118"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/38e5f4300cff5e70b714afd7cc658f5138514f94",
-                "reference": "38e5f4300cff5e70b714afd7cc658f5138514f94",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/aa02b67f961a15cef21f21d293afcac574a62118",
+                "reference": "aa02b67f961a15cef21f21d293afcac574a62118",
                 "shasum": ""
             },
             "require": {
@@ -1058,30 +1099,30 @@
                 "caching",
                 "psr6"
             ],
-            "time": "2019-01-16 13:27:11"
+            "time": "2019-02-23 15:06:07"
         },
         {
             "name": "symfony/inflector",
-            "version": "v3.4.22",
+            "version": "v4.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/inflector.git",
-                "reference": "4a7d5c4ad3edeba3fe4a27d26ece6a012eee46b1"
+                "reference": "275e54941a4f17a471c68d2a00e2513fc1fd4a78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/inflector/zipball/4a7d5c4ad3edeba3fe4a27d26ece6a012eee46b1",
-                "reference": "4a7d5c4ad3edeba3fe4a27d26ece6a012eee46b1",
+                "url": "https://api.github.com/repos/symfony/inflector/zipball/275e54941a4f17a471c68d2a00e2513fc1fd4a78",
+                "reference": "275e54941a4f17a471c68d2a00e2513fc1fd4a78",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8",
+                "php": "^7.1.3",
                 "symfony/polyfill-ctype": "~1.8"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.4-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -1116,20 +1157,20 @@
                 "symfony",
                 "words"
             ],
-            "time": "2019-01-16 13:27:11"
+            "time": "2019-01-16 20:31:39"
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v3.4.22",
+            "version": "v3.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793"
+                "reference": "926e3b797e6bb66c0e4d7da7eff3a174f7378bcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793",
-                "reference": "0f1cbaee6b356e72c0e025f9a4e9d76a25bf4793",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/926e3b797e6bb66c0e4d7da7eff3a174f7378bcf",
+                "reference": "926e3b797e6bb66c0e4d7da7eff3a174f7378bcf",
                 "shasum": ""
             },
             "require": {
@@ -1170,7 +1211,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2019-01-16 09:39:14"
+            "time": "2019-02-23 15:06:07"
         },
         {
             "name": "symfony/polyfill-apcu",
@@ -1347,16 +1388,16 @@
         },
         {
             "name": "symfony/property-access",
-            "version": "v3.4.22",
+            "version": "v3.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-access.git",
-                "reference": "dedc7c1b52e1d0cd5069da0b4c727b3087897f90"
+                "reference": "71f8631f5adcf7f899015b51325f2ba59de5128b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-access/zipball/dedc7c1b52e1d0cd5069da0b4c727b3087897f90",
-                "reference": "dedc7c1b52e1d0cd5069da0b4c727b3087897f90",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/71f8631f5adcf7f899015b51325f2ba59de5128b",
+                "reference": "71f8631f5adcf7f899015b51325f2ba59de5128b",
                 "shasum": ""
             },
             "require": {
@@ -1411,7 +1452,7 @@
                 "property path",
                 "reflection"
             ],
-            "time": "2019-01-16 09:39:14"
+            "time": "2019-02-23 15:06:07"
         }
     ],
     "packages-dev": [],
