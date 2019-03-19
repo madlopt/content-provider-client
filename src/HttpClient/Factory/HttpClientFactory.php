@@ -38,29 +38,6 @@ class HttpClientFactory
     }
 
     /**
-     * @param string $apiDomain
-     * @param string $user
-     * @param string $pass
-     * @return HttpMethodsClient
-     */
-    public function createGeoIpClient($apiDomain, $user, $pass)
-    {
-        $plugins = [
-            new LoggerPlugin($this->logger, new HttpClientFormatter()),
-            new ContentTypePlugin(),
-            new AddHostPlugin(UriFactoryDiscovery::find()->createUri($apiDomain)),
-            new QueryDefaultsPlugin(['user' => $user, 'pass' => $pass])
-        ];
-
-        $client = new PluginClient(
-            HttpClientDiscovery::find(),
-            $plugins
-        );
-
-        return new HttpMethodsClient($client, MessageFactoryDiscovery::find());
-    }
-
-    /**
      * @param string|null $apiDomain
      * @param string|null $jwt
      * @return HttpMethodsClient
