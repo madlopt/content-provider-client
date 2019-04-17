@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2.5 - 2019-04-17
+
+* refactor: add cache expire
+
 ## 2.2.4 - 2019-03-06
 
 * refactor: integration geoip-client

@@ -4,6 +4,7 @@ namespace BlackrockM\ContentProviderClient\Provider;
 
 use Http\Client\Common\HttpMethodsClient;
 use Psr\Cache\CacheItemPoolInterface;
+use function Blackrock\getenv;
 
 /**
  * Class ContentProviderService
@@ -60,7 +61,10 @@ class ContentProviderService
                 ''
             )
         );
-    
+        
+        $cacheExpires = (int)getenv('CONTENT_PROVIDER_CACHE_EXPIRE');
+        $cacheItem->expiresAfter($cacheExpires > 0 ? $cacheExpires : 3600);
+        
         $cacheItem->set($response->getBody());
         $this->cacheItemPool->save($cacheItem);
         
