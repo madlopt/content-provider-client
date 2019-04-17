@@ -10,6 +10,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use BlackrockM\GeoIp\Client\Provider\Factory\GeoIpProviderFactory;
 use Symfony\Component\Cache\Adapter\NullAdapter;
+use function Blackrock\getenv;
 
 /**
  * Class ContentProviderHandlerFactory

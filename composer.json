@@ -4,7 +4,8 @@
   "license": "MIT",
   "type": "package",
   "repositories": [
-  { "type": "vcs", "url": "git@github.com:BlackrockM/geoip-client.git" }
+    { "type": "vcs", "url": "git@github.com:BlackrockM/geoip-client.git" },
+    { "type": "vcs", "url": "git@github.com:BlackrockM/commonLibrary.git" }
   ],
   "authors": [
     {
@@ -22,7 +23,8 @@
     "php-http/client-common": "^1.0",
     "php-http/discovery": "^1.4",
     "php-http/logger-plugin": "^1.0",
-    "BlackrockM/geoip-client": "v0.0.3"
+    "BlackrockM/geoip-client": "^0.0",
+    "blackrock/commonLibrary": "^0.1"
   },
   "autoload": {
     "psr-4": {
