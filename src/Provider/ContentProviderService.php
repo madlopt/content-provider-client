@@ -65,7 +65,7 @@ class ContentProviderService
         $cacheExpires = (int)getenv('CONTENT_PROVIDER_CACHE_EXPIRE');
         $cacheItem->expiresAfter($cacheExpires > 0 ? $cacheExpires : 3600);
         
-        $cacheItem->set($response->getBody());
+        $cacheItem->set((string)$response->getBody());
         $this->cacheItemPool->save($cacheItem);
         
         return $response->getBody();
