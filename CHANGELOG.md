@@ -2,7 +2,7 @@
 
 ## 2.2.6 - 2019-04-18
 
-* refactor: structure, add ContentProviderHandlerSettings class
+* refactor: structure, add settings
 
 ## 2.2.5 - 2019-04-17
 
