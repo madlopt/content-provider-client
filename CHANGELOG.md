@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2.6 - 2019-04-18
+
+* refactor: structure, add ContentProviderHandlerSettings class
+
 ## 2.2.5 - 2019-04-17
 
 * refactor: add cache expire

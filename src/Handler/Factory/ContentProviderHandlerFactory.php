@@ -5,6 +5,7 @@ namespace BlackrockM\ContentProviderClient\Handler\Factory;
 use BlackrockM\ContentProviderClient\Handler\ContentProviderHandler;
 use BlackrockM\ContentProviderClient\HttpClient\Factory\HttpClientFactory;
 use BlackrockM\ContentProviderClient\Provider\ContentProviderService;
+use BlackrockM\ContentProviderClient\Settings\ContentProviderHandlerSettings;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -19,6 +20,22 @@ use function Blackrock\getenv;
 class ContentProviderHandlerFactory
 {
     /**
+     * @var ContentProviderHandlerSettings
+     */
+    private $settings;
+
+    /**
+     * ContentProviderHandlerFactory constructor.
+     */
+    public function __construct($contentProviderUri = false, $contentProviderToken = false)
+    {
+        $this->settings = new ContentProviderHandlerSettings(
+            $contentProviderUri ? $contentProviderUri : getenv('CONTENT_PROVIDER_URI'),
+            $contentProviderToken? $contentProviderToken : getenv('CONTENT_PROVIDER_TOKEN')
+        );
+    }
+
+    /**
      * @return ContentProviderHandler
      */
     public function create(LoggerInterface $logger = null, CacheItemPoolInterface $cacheItemPool = null)
@@ -31,8 +48,8 @@ class ContentProviderHandlerFactory
             new ContentProviderService(
                 (new HttpClientFactory($logger))
                     ->createApiClient(
-                        getenv('CONTENT_PROVIDER_URI'),
-                        getenv('CONTENT_PROVIDER_TOKEN')
+                        $this->settings->getContentProviderUri(),
+                        $this->settings->getContentProviderToken()
                     ),
                 $cacheItemPool
             ),
