@@ -1,8 +1,8 @@
 # CHANGELOG
 
-## 2.2.6 - 2019-04-18
+## 2.3.0 - 2019-04-18
 
-* refactor: structure, add settings
+* feature: structure, add settings
 
 ## 2.2.5 - 2019-04-17
 
