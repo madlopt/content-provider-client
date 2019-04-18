@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.3.0 - 2019-04-18
+
+* feature: structure, add settings
+
 ## 2.2.5 - 2019-04-17
 
 * refactor: add cache expire
