@@ -8,41 +8,41 @@ use function Blackrock\getenv;
  * Class ContentProviderHandlerSettings
  * @package BlackrockM\ContentProviderClient\Handler\Factory
  */
-class ContentProviderHandlerSettings
+class ContentProviderSettings
 {
     /**
      * @var string
      */
-    private $contentProviderUri;
+    private $uri;
     /**
      * @var string
      */
-    private $contentProviderToken;
+    private $token;
 
     /**
-     * ContentProviderHandlerSettings constructor.
-     * @param $contentProviderUri
-     * @param $contentProviderToken
+     * ContentProviderSettings constructor.
+     * @param bool $uri
+     * @param bool $token
      */
-    public function __construct($contentProviderUri, $contentProviderToken)
+    public function __construct($uri = null, $token = null)
     {
-        $this->contentProviderUri = $contentProviderUri;
-        $this->contentProviderToken = $contentProviderToken;
+        $this->uri = $uri === null ? getenv('CONTENT_PROVIDER_URI') : $uri;
+        $this->token = $token === null ? getenv('CONTENT_PROVIDER_TOKEN') : $token;
     }
 
     /**
      * @return string
      */
-    public function getContentProviderUri()
+    public function getUri()
     {
-        return $this->contentProviderUri;
+        return $this->uri;
     }
 
     /**
      * @return string
      */
-    public function getContentProviderToken()
+    public function getToken()
     {
-        return $this->contentProviderToken;
+        return $this->token;
     }
 }
