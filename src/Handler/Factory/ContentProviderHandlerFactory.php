@@ -28,9 +28,9 @@ class ContentProviderHandlerFactory
      * ContentProviderHandlerFactory constructor.
      * @param ContentProviderSettings $contentProviderSettings
      */
-    public function __construct(ContentProviderSettings $contentProviderSettings = null)
+    public function __construct(ContentProviderSettings $contentProviderSettings)
     {
-        $this->settings = $contentProviderSettings === null ? new ContentProviderSettings() : $contentProviderSettings;
+        $this->settings = $contentProviderSettings;
     }
 
     /**
