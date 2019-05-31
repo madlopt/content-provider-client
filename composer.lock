@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "04bc7167baee884d6fdea4bbe4b31729",
-    "content-hash": "f20f5922534cfcd2efe10d6a1d035274",
+    "hash": "e62db05510658209307c6d801a7a382a",
+    "content-hash": "abbe19f0bc81ab407220d6f4b4cd5fb4",
     "packages": [
         {
             "name": "BlackrockM/geoip-client",
@@ -63,7 +63,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BlackrockM/commonLibrary/zipball/05fd566b044990fba958743f4549b15b7870d76a",
+                "url": "https://api.github.com/repos/BlackrockM/commonLibrary/zipball/87cd4b3fb293b5e83ca82703b06ab7aa9045b2a4",
                 "reference": "05fd566b044990fba958743f4549b15b7870d76a",
                 "shasum": ""
             },
@@ -2029,7 +2029,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6"
+        "php": ">=5.6",
+        "ext-json": "*"
     },
     "platform-dev": []
 }

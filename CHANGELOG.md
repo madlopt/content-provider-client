@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.3.1 - 2019-05-31
+
+* feature: return first result by name
+
 ## 2.3.0 - 2019-04-18
 
 * feature: structure, add settings

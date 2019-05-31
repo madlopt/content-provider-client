@@ -7,6 +7,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use BlackrockM\ContentProviderClient\Provider\ContentProviderService;
 use BlackrockM\GeoIp\Client\Provider\GeoIpProvider;
+use function Blackrock\json_decode;
+use function Blackrock\json_encode;
 
 /**
  * Class ContentProviderHandler
@@ -60,7 +62,7 @@ class ContentProviderHandler
     private function getDefaultPage()
     {
         $response = $this->contentProviderService->execute();
-        $decoded = \json_decode($response, true);
+        $decoded = json_decode($response, true);
         
         if (is_array($decoded) && isset($decoded['list'])) {
             foreach ($decoded['list'] as $page) {
@@ -102,15 +104,16 @@ class ContentProviderHandler
     }
     
     /**
+     * @param array $attrs
+     *
      * Allowed params are:
      * ```
      * country_auto_resolve
      * name
      * country_code
-     * ```
      *
-     * @param array $attrs shortcode attributes
      * @return $this
+     * @throws \Http\Client\Exception
      */
     public function retrieve($attrs = [])
     {
@@ -126,20 +129,22 @@ class ContentProviderHandler
             $requestAttrs = array_intersect_key($attrs, array_flip(['name', 'country_code']));
             
             $response = $this->contentProviderService->execute(RequestObject::createFromArray($requestAttrs));
-            $decoded = \json_decode($response, true);
+            $decoded = json_decode($response, true);
             
-            if (!empty($attrs['country_code'])) {
-                if (isset($decoded['list'])) {
-                    foreach ($decoded['list'] as $item) {
-                        if ($item['country_code'] === $attrs['country_code']) {
-                            $this->page = $item;
-                            break;
-                        }
+            if (!empty($attrs['country_code']) && isset($decoded['list'])) {
+                foreach ($decoded['list'] as $item) {
+                    if ($item['country_code'] === $attrs['country_code']) {
+                        $this->page = $item;
+                        break;
                     }
                 }
             }
             
-            if ($this->page === null) {
+            if (!$this->page && isset($decoded['list'][0])) {
+                $this->page = $decoded['list'][0];
+            }
+            
+            if (!$this->page) {
                 $this->page = $this->getDefaultPage();
             }
             
@@ -159,11 +164,7 @@ class ContentProviderHandler
     {
         try {
             $value = $this->pathAccessor($path);
-            if (is_array($value)) {
-                return \json_encode($value);
-            } else {
-                return $value;
-            }
+            return is_array($value) ? json_encode($value) : $value;
         } catch (\Exception $e){
             $this->logger->error($e->getMessage());
         }
