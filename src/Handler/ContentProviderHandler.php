@@ -119,6 +119,8 @@ class ContentProviderHandler
     {
         try {
             
+            $this->page = null;
+            
             if ((!isset($attrs['country_auto_resolve']) || $attrs['country_auto_resolve'] === 'true') &&
                 empty($attrs['country_code'])) {
                 
