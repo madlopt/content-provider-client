@@ -24,7 +24,7 @@
     "php-http/client-common": "^1.0",
     "php-http/discovery": "^1.4",
     "php-http/logger-plugin": "^1.0",
-    "BlackrockM/geoip-client": "^0.0",
+    "BlackrockM/geoip-client": "^1.0",
     "blackrock/commonLibrary": "^0.1"
   },
   "autoload": {
