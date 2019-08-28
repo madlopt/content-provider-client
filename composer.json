@@ -17,7 +17,7 @@
     "php": ">=5.6",
     "ext-json": "*",
     "symfony/options-resolver": "^3.4",
-    "symfony/cache": "^3.4",
+    "symfony/cache": "*",
     "symfony/property-access": "^3.4",
     "psr/log": "~1.1",
     "php-http/guzzle6-adapter": "^1.1",
