@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.0.0 - 2019-08-28
+
+* refactor: update versions for symfony components
+
 ## 2.3.1 - 2019-05-31
 
 * feature: return first result by name
